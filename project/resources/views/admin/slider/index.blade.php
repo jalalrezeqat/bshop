@@ -1,0 +1,251 @@
+@extends('layouts.admin') 
+
+@section('content')  
+					<input type="hidden" id="headerdata" value="{{ __('SLIDER') }}">
+					<div class="content-area">
+						<div class="mr-breadcrumb">
+							<div class="row">
+								<div class="col-lg-12">
+										<h4 class="heading">{{ __('Sliders') }}</h4>
+										<ul class="links">
+											<li>
+												<a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }} </a>
+											</li>
+											<li>
+												<a href="javascript:;">{{ __('Home Page Settings') }} </a>
+											</li>
+											<li>
+												<a href="{{ route('admin-sl-index') }}">{{ __('Sliders') }}</a>
+											</li>
+										</ul>
+								</div>
+							</div>
+						</div>
+						<div class="product-area">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="mr-table allproduct">
+
+                        @include('includes.admin.form-success')  
+
+										<div class="table-responsiv">
+											<h4 class="heading">{{ __('Slider by vendor not approved') }}</h4>
+
+											<br>
+												<table id="Bshoptable2" class="table table-hover dt-responsive" cellspacing="0" width="100%">
+													<thead>
+														<tr>
+															<th>{{ __('Featured Image') }}</th>
+															<th width="40%">{{ __('Title') }}</th>
+															<th>{{ __('Options') }}</th>
+														</tr>
+													</thead>
+												</table>
+												<br>
+												<h4 class="heading">{{ __('Slider by vendor approved') }}</h4>
+
+												<br>
+												<table id="Bshoptable1" class="table table-hover dt-responsive" cellspacing="0" width="100%">
+													<thead>
+														<tr>
+															<th>{{ __('Featured Image') }}</th>
+															<th width="40%">{{ __('Title') }}</th>
+															<th>{{ __('Options') }}</th>
+														</tr>
+													</thead>
+												</table>
+												<br>		
+												<h4 class="heading">{{ __('Slider by Admin') }}</h4>
+										
+													<br>
+													<table id="Bshoptable" class="table table-hover dt-responsive" cellspacing="0" width="100%">
+														<thead>
+															<tr>
+																<th>{{ __('Featured Image') }}</th>
+																<th width="40%">{{ __('Title') }}</th>
+																<th>{{ __('Options') }}</th>
+															</tr>
+														</thead>
+													</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+{{-- ADD / EDIT MODAL --}}
+										
+										<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true">
+										
+										
+										<div class="modal-dialog modal-dialog-centered" role="document">
+										<div class="modal-content">
+												<div class="submit-loader">
+														<img  src="{{asset('assets/images/'.$gs->admin_loader)}}" alt="">
+												</div>
+											<div class="modal-header">
+											<h5 class="modal-title"></h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											</div>
+											<div class="modal-body">
+
+											</div>
+											<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+											</div>
+										</div>
+										</div>
+</div>
+
+{{-- ADD / EDIT MODAL ENDS --}}
+
+
+{{-- DELETE MODAL --}}
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+	<div class="modal-header d-block text-center">
+		<h4 class="modal-title d-inline-block">{{ __('Confirm Delete') }}</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+	</div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+            <p class="text-center">{{ __('You are about to delete this Slider.') }}</p>
+            <p class="text-center">{{ __('Do you want to proceed?') }}</p>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
+            <a class="btn btn-danger btn-ok">{{ __('Delete') }}</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{{-- DELETE MODAL ENDS --}}
+
+
+{{-- aprove MODAL --}}
+
+<div class="modal fade" id="confirm-aprove" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+  
+	  <div class="modal-header d-block text-center">
+		  <h4 class="modal-title d-inline-block">{{ __('Confirm Aprove') }}</h4>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+			  </button>
+	  </div>
+  
+		<!-- Modal body -->
+		<div class="modal-body">
+			  <p class="text-center">{{ __('You are about to aprove this Slider.') }}</p>
+			  <p class="text-center">{{ __('Do you want to proceed?') }}</p>
+		</div>
+  
+		<!-- Modal footer -->
+		<div class="modal-footer justify-content-center">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('Cancel') }}</button>
+			  <a class="btn btn-success btn-ok">{{ __('Aprove') }}</a>
+		</div>
+  
+	  </div>
+	</div>
+  </div>
+  
+  {{-- aprove MODAL ENDS --}}
+
+@endsection    
+
+
+
+@section('scripts')
+
+
+{{-- DATA TABLE --}}
+
+    <script type="text/javascript">
+
+		var table = $('#Bshoptable').DataTable({
+			   ordering: false,
+               processing: true,
+               serverSide: true,
+               ajax: '{{ route('admin-sl-datatables') }}',
+               columns: [
+                        { data: 'photo', name: 'photo' , searchable: false, orderable: false},
+                        { data: 'title_text', name: 'title_text' },
+            			{ data: 'action', searchable: false, orderable: false }
+
+                     ],
+                language : {
+                	processing: '<img src="{{asset('assets/images/'.$gs->admin_loader)}}">'
+                }
+            });
+
+      	$(function() {
+        $(".btn-area").append('<div class="col-sm-4 table-contents">'+
+        	'<a class="add-btn" href="{{route('admin-sl-create')}}">'+
+          '<i class="fas fa-plus"></i> {{ __('Add New Slider') }}'+
+          '</a>'+
+          '</div>');
+      });											
+									
+
+{{-- DATA TABLE ENDS--}}
+
+
+var table = $('#Bshoptable1').DataTable({
+
+	   ordering: false,
+	   processing: true,
+	   serverSide: true,
+	   ajax: '{{ route('admin-sl-datatablesslideraproved') }}',
+	   columns: [
+				{ data: 'photo', name: 'photo' , searchable: false, orderable: false},
+				{ data: 'title_text', name: 'title_text' },
+				{ data: 'action', searchable: false, orderable: false },
+
+
+			 ],
+		language : {
+			processing: '<img src="{{asset('assets/images/'.$gs->admin_loader)}}">'
+		}
+	});
+//
+var table = $('#Bshoptable2').DataTable({
+
+ordering: false,
+processing: true,
+serverSide: true,
+ajax: '{{ route('admin-sl-datatablesslidernotaproved') }}',
+columns: [
+		 { data: 'photo', name: 'photo' , searchable: false, orderable: false},
+		 { data: 'title_text', name: 'title_text' },
+		 { data: 'action', searchable: false, orderable: false },
+
+
+	  ],
+ language : {
+	 processing: '<img src="{{asset('assets/images/'.$gs->admin_loader)}}">'
+ }
+});
+
+		
+
+</script>
+
+
+@endsection   
